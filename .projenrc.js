@@ -1,4 +1,4 @@
-const { AwsCdkTypeScriptApp } = require('projen');
+const { AwsCdkTypeScriptApp } = require('projen')
 const project = new AwsCdkTypeScriptApp({
   cdkVersion: '2.0.0-rc.1',
   defaultReleaseBranch: 'main',
@@ -114,5 +114,16 @@ const project = new AwsCdkTypeScriptApp({
   // testdir: 'test',                                                          /* Jest tests directory. Tests files should be named `xxx.test.ts`. */
   // tsconfig: undefined,                                                      /* Custom TSConfig. */
   // typescriptVersion: 'latest',                                              /* TypeScript version to use. */
-});
-project.synth();
+})
+project.eslint.addOverride({
+  files: ['src/**/*.ts', '.projenrc.js'],
+  rules: {
+    'semi': ['error', 'never', { beforeStatementContinuationChars: 'never' }],
+    'semi-spacing': ['error', { after: true, before: false }],
+    'semi-style': ['error', 'first'],
+    'no-extra-semi': 'error',
+    'no-unexpected-multiline': 'error',
+    'no-unreachable': 'error',
+  },
+})
+project.synth()
