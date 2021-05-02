@@ -8,12 +8,12 @@ const chime = new aws.Chime()
 const tableName = process.env.TABLE_NAME ?? ''
 
 type JoinEvent = {
-  title: string;
-  name: String;
+  title: string
+  name: String
 }
 
 type LeaveEvent = {
-  title: string;
+  title: string
 }
 
 export const join = async ({ body }: APIGatewayEvent) => {

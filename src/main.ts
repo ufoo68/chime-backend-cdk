@@ -43,7 +43,7 @@ const devEnv = {
 
 const app = new App()
 
-new MyStack(app, 'my-stack-dev', { env: devEnv })
+new MyStack(app, 'chime-backend-dev', { env: devEnv })
 // new MyStack(app, 'my-stack-prod', { env: prodEnv });
 
 app.synth()
