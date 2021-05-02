@@ -10,6 +10,7 @@ export class MyStack extends Stack {
         name: 'title',
         type: aws_dynamodb.AttributeType.STRING,
       },
+      timeToLiveAttribute: 'ttl',
     })
     const joinMeeting = new aws_lambda_nodejs.NodejsFunction(this, 'join', {
       runtime: aws_lambda.Runtime.NODEJS_14_X,

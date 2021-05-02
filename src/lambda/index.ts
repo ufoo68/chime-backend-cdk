@@ -55,7 +55,7 @@ const getMeeting = async (title: string) => {
   const result = await dynamo.getItem({
     TableName: tableName,
     Key: {
-      Title: {
+      title: {
         S: title,
       },
     },
@@ -68,9 +68,9 @@ const putMeeting = async (title: string, meeting: any) => {
   await dynamo.putItem({
     TableName: tableName,
     Item: {
-      Title: { S: title },
-      Data: { S: JSON.stringify(meeting) },
-      TTL: {
+      title: { S: title },
+      data: { S: JSON.stringify(meeting) },
+      ttl: {
         N: `${Math.floor(Date.now() / 1000) + 60 * 60 * 24}`,
       },
     },
