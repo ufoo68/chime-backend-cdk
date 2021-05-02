@@ -1,4 +1,4 @@
-import { App, Stack, StackProps, aws_lambda_nodejs, aws_lambda, aws_apigateway, aws_dynamodb } from 'aws-cdk-lib'
+import { App, Stack, StackProps, aws_lambda_nodejs, aws_lambda, aws_apigateway, aws_dynamodb, aws_iam } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 
 export class MyStack extends Stack {
@@ -20,6 +20,10 @@ export class MyStack extends Stack {
         TABLE_NAME: table.tableName,
       },
     })
+    joinMeeting.addToRolePolicy(new aws_iam.PolicyStatement({
+      actions: ['chime:*'],
+      resources: ['*'],
+    }))
     const leaveMeeting = new aws_lambda_nodejs.NodejsFunction(this, 'leave', {
       runtime: aws_lambda.Runtime.NODEJS_14_X,
       entry: 'src/lambda/index.ts',
@@ -28,8 +32,12 @@ export class MyStack extends Stack {
         TABLE_NAME: table.tableName,
       },
     })
+    leaveMeeting.addToRolePolicy(new aws_iam.PolicyStatement({
+      actions: ['chime:*'],
+      resources: ['*'],
+    }))
     table.grantReadWriteData(joinMeeting)
-    table.grantReadData(leaveMeeting)
+    table.grantReadWriteData(leaveMeeting)
     const api = new aws_apigateway.RestApi(this, 'api')
     api.root.addResource('join').addMethod('POST', new aws_apigateway.LambdaIntegration(joinMeeting))
     api.root.addResource('leave').addMethod('POST', new aws_apigateway.LambdaIntegration(leaveMeeting))

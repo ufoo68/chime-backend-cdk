@@ -46,8 +46,15 @@ export const leave = async ({ body }: APIGatewayEvent) => {
   const { title }: LeaveEvent = JSON.parse(body ?? '{}')
   const meeting = await getMeeting(title)
 
-  // End the meeting. All attendee connections will hang up.
   await chime.deleteMeeting({ MeetingId: meeting.Meeting.MeetingId }).promise()
+  await dynamo.deleteItem({
+    TableName: tableName,
+    Key: {
+      title: {
+        S: title,
+      },
+    },
+  }).promise()
   return response(200, 'application/json', JSON.stringify({}))
 }
 
@@ -60,7 +67,7 @@ const getMeeting = async (title: string) => {
       },
     },
   }).promise()
-  return result.Item ? JSON.parse(result.Item?.S?.S ?? '{}') : null
+  return result.Item ? JSON.parse(result.Item?.data?.S ?? '{}') : null
 }
 
 // Stores the meeting in the table using the meeting title as the key
