@@ -1,6 +1,6 @@
 const { AwsCdkTypeScriptApp } = require('projen');
 const project = new AwsCdkTypeScriptApp({
-  cdkVersion: '1.95.2',
+  cdkVersion: '2.0.0-rc.1',
   defaultReleaseBranch: 'main',
   name: 'chime-backend-cdk',
 
@@ -23,9 +23,9 @@ const project = new AwsCdkTypeScriptApp({
   // autoDetectBin: true,                                                      /* Automatically add all executables under the `bin` directory to your `package.json` file under the `bin` section. */
   // bin: undefined,                                                           /* Binary programs vended with your module. */
   // bundledDeps: undefined,                                                   /* List of dependencies to bundle into this module. */
-  // deps: [],                                                                 /* Runtime dependencies of this module. */
+  deps: ['aws-sdk', 'uuid', 'aws-lambda'], /* Runtime dependencies of this module. */
   // description: undefined,                                                   /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],                                                              /* Build dependencies for this module. */
+  devDeps: ['@types/uuid', '@types/aws-lambda'], /* Build dependencies for this module. */
   // entrypoint: 'lib/index.js',                                               /* Module entrypoint (`main` in `package.json`). */
   // homepage: undefined,                                                      /* Package's Homepage / Website. */
   // keywords: undefined,                                                      /* Keywords to include in `package.json`. */
