@@ -87,7 +87,12 @@ const putMeeting = async (title: string, meeting: any) => {
 const response = (statusCode: number, contentType: string, body: any) => {
   return {
     statusCode: statusCode,
-    headers: { 'Content-Type': contentType },
+    headers: {
+      'Content-Type': contentType,
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+    },
     body: body,
     isBase64Encoded: false,
   }

@@ -38,7 +38,12 @@ export class MyStack extends Stack {
     }))
     table.grantReadWriteData(joinMeeting)
     table.grantReadWriteData(leaveMeeting)
-    const api = new aws_apigateway.RestApi(this, 'api')
+    const api = new aws_apigateway.RestApi(this, 'api', {
+      defaultCorsPreflightOptions: {
+        allowOrigins: aws_apigateway.Cors.ALL_ORIGINS,
+        allowMethods: aws_apigateway.Cors.ALL_METHODS,
+      }
+    })
     api.root.addResource('join').addMethod('POST', new aws_apigateway.LambdaIntegration(joinMeeting))
     api.root.addResource('leave').addMethod('POST', new aws_apigateway.LambdaIntegration(leaveMeeting))
   }
@@ -47,7 +52,7 @@ export class MyStack extends Stack {
 // for development, use account/region from cdk cli
 const devEnv = {
   account: process.env.CDK_DEFAULT_ACCOUNT,
-  region: process.env.CDK_DEFAULT_REGION,
+  region: 'us-east-1',
 }
 
 const app = new App()
